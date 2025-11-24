@@ -21,7 +21,7 @@ sudo apt install git
 git clone https://github.com/ruchithachakilam/ms.git
 cd ms
 sudo docker build -t myapp .
-sudo docker run -t -p 8883:80 newapp
+sudo docker run -t -p 8883:8080 newapp
 
 
 scripted
