@@ -1,3 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Notes</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 30px;
+        }
+
+        .navbar {
+            background: #222;
+            padding: 15px;
+            color: white;
+            font-size: 22px;
+        }
+
+        .content {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        /* Hidden section using CSS */
+        .hidden-block {
+            display: none;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Click to reveal */
+        .reveal-btn {
+            background: #444;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    My Notes Navbar
+</div>
+
+<div class="content">
+    <h2>General Notes</h2>
+    <p>This page contains general notes. Nothing unusual here.</p>
+
+    <!--  
+    ==========================================
+    HIDDEN COMMENT BLOCK
+    You can put anything here, comments do NOT show in the browser.
+    ==========================================
+    
+    PUT YOUR HIDDEN CONTENT HERE
+    -->
+    
+    <hr>
+
+    <h3>Collapsible Hidden Section</h3>
+    <details>
+        <summary>Click to expand hidden notes</summary>
+        <pre>
+PUT YOUR HIDDEN CONTENT HERE
+        </pre>
+    </details>
+
+    <hr>
+
+    <h3>CSS Hidden Block (Click to Reveal)</h3>
+    <div class="reveal-btn" onclick="document.getElementById('secret').style.display='block'">
+        Show Hidden Block
+    </div>
+
+    <div id="secret" class="hidden-block">
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-installer.exe
+minikube-installer.exe
+then set the environmental variables
+minikube start --driver=docker
+minikube kubectl -- get pods -A
+minikube start
+kubectl create deployment mynginx --image=nginx
+if already created then ---> kubectl set image deployment/myngnix nginx=nginx:latest
+kubectl get deployments
+kubectl expose deployment mynginx --type=NodePort --port=80 --target-port=80
+kubectl scale deployment mynginx --replicas=4
+kubectl get service myngnix
+kubectl port-forward svc/mynginx 8081:80
+Access the app via http://localhost:8081.
+kubectl delete deployment mynginx
+kubectl delete service mynginx
+minikube stop
+
+Nagios Setup:
+docker pull jasonrivers/nagios:latest
+docker run --name nagiosdemo -p 8888:80 jasonrivers/nagios:latest
+http://localhost:8888
+docker stop nagiosdemo
+docker rm nagiosdemo
+docker images(optional)
+docker rmijasonrivers/nagios:latest
+    </div>
+
+</div>
+
+</body>
+</html>
 cmd 
 >minikube start
 kubecetl create deployment mynginx --image=nginx
