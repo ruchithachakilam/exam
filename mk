@@ -12,3 +12,4 @@ docker pull jasonrivers/nagios
 docker run -d --name nagios -p 9090:80 jasonrivers/nagios
 
 localhost:9090
+servecies->currentload
