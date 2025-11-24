@@ -14,7 +14,7 @@ docker run -d --name nagios -p 9090:80 jasonrivers/nagios
 localhost:9090
 servecies->currentload
 
-
+aws
 sudo apt update
 sudo apt-get install docker.io
 sudo apt install git
@@ -55,3 +55,14 @@ pipeline {
         }
     }
 }
+
+ngrok yml copy
+in app ngrok
+ngrok http 8080 copy upt to dev 
+paste in github payload afterthat/github-webhook/
+
+email
+smtpserver->smtp.gmail.com
+smtpport 587
+
+password kosm google.accounts.com lo app passwords lo create 
