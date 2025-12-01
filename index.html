@@ -85,6 +85,38 @@ PUT YOUR HIDDEN CONTENT HERE
 
     <div id="secret" class="hidden-block">
 
+        dockerfile
+FROM tomcat:9-jdk11
+COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
+docker build -t app .
+docker run -d -p 8081:8080 --name web app
+localhost:8081
+-----------
+        docker-compose
+        notepad docker-compose.yml
+        services:
+  libraryapp:
+    image: ole3:latest
+    ports:
+      - "9086:8080"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3308:3309"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+
+        docker compose up -d
+        docker ps
+        ------
+
+
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-installer.exe
 minikube-installer.exe
 then set the environmental variables
