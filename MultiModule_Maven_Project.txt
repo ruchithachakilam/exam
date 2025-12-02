@@ -1,0 +1,117 @@
+
+Multi-Module Maven Project – Detailed Explanation
+=================================================
+
+1. What is a Multi-Module Maven Project?
+----------------------------------------
+A multi-module Maven project allows you to manage multiple related modules under
+one parent project. The parent controls dependencies, versions, plugins, and build
+order. All modules build together using: mvn clean install.
+
+Structure:
+MyParentProject (parent)
+ ├── pom.xml  
+ ├── module1  
+ │     └── pom.xml  
+ └── module2  
+       └── pom.xml  
+
+------------------------------------------------------------
+
+2. Creating the Parent Project
+------------------------------
+
+Step 1: Create folder
+mkdir MyParentProject
+cd MyParentProject
+
+Step 2: Create parent pom.xml with packaging=pom and module list:
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>MyParentProject</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>module1</module>
+    <module>module2</module>
+  </modules>
+</project>
+
+------------------------------------------------------------
+
+3. Creating Module 1
+--------------------
+
+Command:
+mvn archetype:generate -DgroupId=com.example -DartifactId=module1 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+module1/pom.xml:
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.example</groupId>
+    <artifactId>MyParentProject</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>module1</artifactId>
+</project>
+
+------------------------------------------------------------
+
+4. Creating Module 2
+--------------------
+
+Command:
+mvn archetype:generate -DgroupId=com.example -DartifactId=module2 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+module2/pom.xml similar to module1 except artifactId=module2.
+
+------------------------------------------------------------
+
+5. Final Project Structure
+--------------------------
+
+MyParentProject/
+ ├── pom.xml (parent)
+ ├── module1/
+ │     └── pom.xml
+ └── module2/
+       └── pom.xml
+
+------------------------------------------------------------
+
+6. Build Entire Multi-Module Project
+------------------------------------
+
+Inside parent folder:
+mvn clean install
+
+This builds:
+- Parent POM
+- Module 1
+- Module 2
+
+------------------------------------------------------------
+
+7. Viva Questions
+-----------------
+
+Q: Why multi-modules?
+A: To manage multiple related modules under one parent.
+
+Q: Why packaging pom?
+A: Parent is only a container for modules.
+
+Q: How to build all modules?
+A: mvn clean install
+
+Q: How do modules inherit dependencies?
+A: Through the parent POM using <parent> tag.
+
+------------------------------------------------------------
