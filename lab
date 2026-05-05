@@ -1,0 +1,209 @@
+week-7(lamda)
+
+1.s3 bucket->name->properties->versioning->edit->enable
+2.dynmodb->name->partion key lo unique->ctreate
+3.lamda->create function->name->python 3.10
+add->triiger->s3->choose our bucket
+add->code:
+import boto3
+from uuid import uuid4
+
+def lambda_handler(event, context):
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('newtable')
+
+    if 'Records' in event:
+        for record in event['Records']:
+            bucket_name = record['s3']['bucket']['name']
+            object_key = record['s3']['object']['key']
+            size = record['s3']['object'].get('size', -1)
+            event_name = record.get('eventName', 'Unknown')
+            event_time = record.get('eventTime', 'Unknown')
+
+            table.put_item(
+                Item={
+                    'unique': str(uuid4()),
+                    'Bucket': bucket_name,
+                    'Object': object_key,
+                    'Size': size,
+                    'Event': event_name,
+                    'EventTime': event_time
+                }
+            )
+    else:
+        print("No Records found in event")
+
+change tavle name 
+deploy
+4.configurations->permisions->link->add permsiions->create insline->json->code:
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "dynamodb:PutItem",
+      "Resource": "*"
+    }
+  ]
+}
+next->ploicyname->create policy
+
+6.now go to s3->upload->go to dynmo db check
+
+=============================================================
+
+week 10
+
+1.open elastic beans stack give name and description create
+2.create enivironment
+if you want to upload your code selct your code
+3.choose python for there code and for our nodejs
+
+server.js
+
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello vers2 new file!');
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+package.json
+{
+  "name": "myapp",
+  "version": "1.0.0",
+  "description": "Simple AWS Elastic Beanstalk App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
+click next
+3.choose service role and ec2 instances
+4.select default vpc->enable and check all tick all boxes and next
+5.next->next->create->wait for deploying it gets a link click and our app opens
+
+==========================================================================
+week -11
+
+create a blank bot->name->English
+2.intents->name:BookHotel->create
+3.sample utterneces->add 
+I want to book a hotel
+Book a room
+Reserve hotel
+I need a room
+4.create slots
+=>age,AMAZON.NUMBER,what is your age?-?advance settings->succcesresponse->condional brancing->{age<18}->resonse->noyt elgible
+=>location,.city,which city do you want?
+=>checkin,.date,what is your chec-in date?=>retry prompt=>please provide a valid date
+=>nights,.number,how many nights will you stay?
+5.go to slot types->add->RoomType->add values:single,double,suite->save
+6.now creaste a clot with this in advace settings->slot promts->more prompts options->add cards->buttions-->single,...
+intial and confirmational msg
+build and test
+Initial Response:
+Welcome to Hotel Booking! What is your name?
+Confirmation:
+Do you want to confirm booking in {location} for {nights} nights?
+=========================================================================
+
+week -13
+
+role->create->use case->ec2->next
+select amaxzons3fullacess
+give role name->create
+create ec2->ubuntu->keypair
+go to ec2->actions->security->modufy iam role->selecy what iam created->update
+now ec2->connect ssh
+sudo apt update
+sudo apt install awscli -y
+aws --version
+aws s3 ls
+
+============================================================================
+
+week -9
+
+Create Instance 1
+Name → webserver-1
+AMI → Amazon Linux 2
+Instance type → t2.micro
+Security Group:
+SSH (22) → Your IP
+HTTP (80) → 0.0.0.0/0
+
+👉 Connect (SSH) and run:
+sudo yum update -y
+sudo yum install httpd -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+echo "This is Server 1" | sudo tee /var/www/html/index.html
+👉 Copy Public IPv4 → paste in browser
+
+in ec2 only create load balance->applcations ->create->
+in that give name->add security grp->http and http with anywherear
+in side there will be target groups->create->give name->next->add our both ec2s->kindha pull->nmext creatye->now go to that page and add this target group
+
+
+
+=====================================
+week -12
+
+part -a gui
+login as root user->iam->iam user->entername->custo,ize password->next->attach policss directly->s3fullaccess->create user->download.csv
+logout
+login to iam with these creditentials
+check s3 and ec2
+
+part -b cli
+rootuser
+->login->choose our user
+next we need select security ceeditns from profile
+create access key->login
+
+go to cmd
+aws configure->enter detils->
+ap-south-1
+json
+aws s3 ls
+aws s3 mb s3://name
+aws iam list-users
+and give details
+==================================================
+week 8:
+
+first open sns->toppic->statndared->name ->create topic
+create subscription->protocol:emial,endpoint mana email
+next send message lo Edina msg ichi send
+
+s3 to sns
+
+create s3 bucket
+create with name->and create->open properties->in that event notification create->event types->all->ssns topic->choose ours-
+>save->upload a file->the mail will come
+
+sqs
+name->stamdard->create
+sned and recive msgs->write somenting and click send->down poll msgs poll it u get over there
+sns->create subscription->amazons sqs->our sqs
+now s3 -> upload 
+send and messages lo poll msgs our upladed item will come in sqs
+
+lamda
+
+create function
+with name->create
+configuration lo->permsiions lo->link->add permisions lo->create permsisions->AWSLambdaSQSQueueExecutionRole add
+lamda->trigger->sqs->choose our sqs-add
+
+now upload s3 lo okati ipud lamda lo logs lo cloiudwatch->check
