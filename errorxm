@@ -1,0 +1,673 @@
+4.Log File Analysis for Incident Detection LAB 
+cd /var/log 
+ls
+last
+journalctl | less
+journalctl | grep ssh
+journalctl | less    
+journalctl | grep "Failed"
+journalctl | grep ssh     
+journalctle | grep -i error
+grep "404" /var/log/apache2/access.log
+journalctl | grep -i error 
+sudo apt update
+cd /var/log/apache2
+ls
+sudo less access.log       
+grep "404" /var/log/apache2/access.log
+less /var/log/dpkg.log
+
+part a
+sudo journalctl -f  
+ sudo apt install openssh-server -y
+sudo service ssh start
+ip a
+ssh fakeuser@localhost
+>>enter wrong password multiple times 
+└─$ journalctl | grep "Failed password"
+journalctl | grep "Failed password" | awk '{print $13}'
+└─$ journalctl | grep "Failed password" | awk '{print $13}' | sort | uniq -c | sort -nr
+|__$ journalctl | grep "Failed password" | awk '{print $11}' | sort | uniq -c | sort -nr
+
+Try this:
+
+sudo journalctl -xe | grep "Failed"
+
+OR
+
+sudo journalctl --since "10 minutes ago" | grep "Failed"
+👉 “Login successful?”
+
+Say:
+
+No, but the system allowed unlimited attempts without restrictions, which indicates weak authentication security.
+===============================================================================================
+ 3.. creating and analyzing disk images using dc3dd and autopsy
+3. Creating and Analyzing Disk Images with FTK Imager 
+ 1. Create disk (100MB)
+dd if=/dev/zero of=practice_disk.dd bs=1M count=100
+
+
+ 2. Format disk
+mkfs.ext4 practice_disk.dd
+
+3. Create mount folder
+sudo mkdir /mnt/practice
+
+ 4. Mount disk
+sudo mount -o loop practice_disk.dd /mnt/practice
+
+5. Create evidence file
+echo "Cybersecurity Lab Evidence" | sudo tee /mnt/practice/evidence.txt
+
+6. Verify file (optional but important)
+ls /mnt/practice
+ OUTPUT: evidence.txt
+
+7. Unmount disk
+sudo umount /mnt/practice
+
+
+ PART 2: Create Forensic Image
+ 8. Create forensic image
+sudo dd if=practice_disk.dd of=disk_image.dd bs=4M
+
+
+9.  Check files
+ls
+
+PART 3: Analyze in Autopsy
+10. Start Autopsy
+sudo autopsy
+
+ Open browser:
+http://localhost:9999/autopsy
+http://127.0.0.1:9999/autopsy
+
+11. Create Case
+Case Name: Lab1 
+Click New Case → Next → Next 
+
+
+Click new case
+
+
+Click add host
+
+12.Add Image
+
+
+Add image file
+Path: 
+/home/kali/disk_image.dd
+Select: 
+o✔️ Partition 
+o✔️ Symlink 
+Click Next 
+
+ 13. Hash Option
+✔️ Calculate hash value 
+Click: 
+oAdd → OK 
+
+Add->ok
+
+ 14. Analyze
+Select image 
+Click ANALYZE 
+
+
+PART 4: Find Evidence
+ 15. File Analysis
+Click File Analysis 
+
+Click dir → navigate folders 
+Open: 
+evidence.txt
+ Output:
+Cybersecurity Lab Evidence
+
+ 16. Keyword Search (optional)
+Search:
+Cybersecurity
+
+FINAL OUTPUT
+ Evidence file found
+ Forensic image analyzed
+ MD5 verified
+
+OR 
+
+Experiment 17: Creating and Analyzing Disk Images Using dc3dd and 
+Autopsy (Alternative to FTK Imager) 
+In kali terminal,
+> echo "Cybersecurity Lab Evidence" > evidence.txt
+>cat evidence.txt
+>ls
+>sudo apt update
+>sudo apt install dc3dd -y
+>dc3dd if=/dev/zero of=/home/kali/disk_image.dd cnt=10000 hash=md5 log=/home/kali/acquisition.log
+>mkfs.ext4 /home/kali/disk_image.dd
+>ls -lh /home/kali/disk_image.dd 
+>cat /home/kali/acquisition.log
+>autopsy
+>sudo autopsy
+>The terminal will display a URL: 
+http://localhost:9999/autopsy
+ Open this link in the browser.
+>In the Autopsy interface: 
+1. Click Create New Case :cyberforensiclab
+2. Enter case details: 
+casename:cyberforensiclab
+description:cyberforensic investigation
+names:bharadwaj,ganesh->click on new case
+>add host
+Host Name :KaliLabMachine 
+Description :Kali Linux virtual machine used for forensic disk image investigation 
+Time Zone :Leave Blank 
+Time Skew Adjustment :Leave Blank 
+Alert Hash Database :Leave Blank 
+Ignore Hash Database :Leave Blank 
+Then click: 
+Next(add host)
+>add image
+>location :/home/kali/disk_image.dd 
+>choose partition
+next
+enable >verify hash after importing?
+>add
+>ok
+>analyze
+
+
+========================================================
+6. Title: Privacy Audit of Popular Apps (Desktop WhatsApp) and Websites (Facebook) & Data Breach Case Study Analysis
+## ✅ Step 1: Open Kali Terminal
+
+```bash
+Ctrl + Alt + T
+## ✅ Step 2: Install Node.js & npm
+```bash
+sudo apt update
+sudo apt install nodejs npm -y
+
+## ✅ Step 3: Install Nativefier
+sudo npm install -g nativefier
+nativefier https://web.whatsapp.com
+web-whatsapp-linux-x64
+## ✅ Step 5: Open WhatsApp Desktop
+cd web-whatsapp-linux-x64
+./WhatsAppWeb
+## ✅ Step 6: Login
+👉 QR code appears
+👉 Open WhatsApp on phone → Linked Devices → Scan QR
+
+✔️ Now WhatsApp works on Kali
+
+# 🔍 Step 7: Start Wireshark
+
+```bash
+wireshark
+## Select Interface
+👉 Choose:eth0 OR wlan0
+👉 Click **Start Capture**
+
+
+## ✅ Step 8: Generate Traffic
+
+In WhatsApp:
+
+* Send messages
+* Send images
+* Open chats
+
+---
+
+## ✅ Step 9: Apply Filters
+
+In Wireshark filter bar:
+tls
+or
+
+dns
+
+
+//facebook
+https://www.facebook.com
+open->burpsuite
+go to proxy->click options->interface:127.0.0.1:8080
+in browser configuration->open firefix->go to ettings->network settings->manual proxy configuration->http proxy:127.0.0.1 port 8080
+tick this proxy server for all prorocols
+turn on incercept on burppsuite
+reload facebook
+Look for:
+
+Cookie:
+datr=
+fr=
+c_user=
+xs=
+Look inside request headers.
+
+Example:
+
+User-Agent:
+Cookie:
+Referer:
+Origin:
+Authorization:
+
+These headers contain browser and session information.
+Now press:
+
+F12
+
+Open:
+
+Developer Tools → Network Tab
+
+Refresh Facebook again.
+TEP 11: Observe Third-Party Requests
+
+Look for requests to:
+
+analytics
+ads
+tracking domains
+CDN services
+
+Examples:
+
+facebook.net
+doubleclick.net
+analytics
+pixel
+
+//if error comes
+open http://burp->download ca certicate -> settings lo privacy & security lo certificates->
+view certificastes->authorites->import->select downloaded cacert.dar->
+rick this ca to identify websites and trust this ca ->reload faceook->burpsuite on and check
+
+observation:
+Traffic generated by WhatsApp Web and Facebook was captured using Wireshark. Most communication was encrypted using TLS, 
+indicating secure transmission of user data. DNS requests and encrypted packets were visible during messaging and browsing activities. 
+The experiment demonstrated how modern applications use encryption to protect user privacy while still exposing limited metadata such as DNS queries and IP addresses
+==================================================================
+
+7.  System Security Audit
+
+## 🔹 STEP 1: System Information
+Windows + R → msinfo32
+**Check:** -> OS Version -> System Type
+**Observation:**
+The system information was obtained using the msinfo32 tool. The system is running on Microsoft Windows 11 Home Single Language, 64-bit operating system, with Intel i5 processor and UEFI-based architecture. Secure Boot is enabled, indicating a secure boot configuration. Secure Boot enhances system security by preventing unauthorized boot loaders.
+
+## 🔹 STEP 2: Check Windows Updates
+Settings → Windows Update → Check for updates
+**Observation:**
+The Windows Update section was checked, and it was found that updates are available and pending installation. The system requires a restart to complete the update process. Pending updates may expose the system to known vulnerabilities. Regular updates are essential to maintain system security.
+
+## 🔹 STEP 3: Check Firewall Status
+Search → Windows Defender Firewall → Turn Windows Defender Firewall on or off
+**Observation:**
+The firewall settings were checked and it was observed that firewall management is handled by Kaspersky antivirus, indicating that a third-party firewall is active. This ensures network protection, although misconfiguration may still pose risks.
+
+## 🔹 STEP 4: Check Antivirus Status
+Windows Security → Virus & Threat Protection
+**Check:**->* Real-time protection → ON and Last scan → Recent
+
+**Observation:**
+The antivirus status was verified and Kaspersky antivirus is active. No threats were detected and protection settings are functioning properly. Antivirus software provides protection against malware and cyber threats.
+
+## 🔹 STEP 5: Check Password & Account Security
+Settings → Accounts → Sign-in options
+**Check:** Password / PIN enabled and  Windows Hello (optional)
+
+**Observation:**
+The system uses secure authentication methods such as password and PIN. This ensures secure access and prevents unauthorized login.
+
+## 🔹 STEP 6: Check Installed Applications
+Settings → Apps → Installed apps
+**Check:**
+* Unknown software and Cracked tools
+**Observation:**
+The installed applications were reviewed and no suspicious or unauthorized software was found. Avoiding unverified software helps prevent malware risks.
+
+## 🔹 STEP 7: Check Startup Programs
+**Steps:**
+Ctrl + Shift + Esc → Startup tab
+* Disable unknown apps
+
+**Observation:**
+Startup applications were analyzed and some unnecessary apps were enabled. Disabling them improves system performance and reduces security risks.
+## 🔹 STEP 8: Check Network Security
+
+**Steps:**
+Settings → Network & Internet
+check
+* Wi-Fi connection
+* Network type (Private/Public)
+
+**Observation:**
+The system is connected to Wi-Fi and configured as a Public network. This restricts device visibility and enhances security in untrusted environments.
+
+## 🔹 STEP 9: Check Browser Security
+Browser → Settings → Privacy & Security
+
+**Check:**Safe browsing → ON and Remove unknown extensions
+
+**Observation:**
+Safe browsing is enabled, protecting against malicious websites and unsafe downloads. This helps prevent phishing and malware attacks.
+## 🔹 STEP 10: Check Data Backup
+
+**Steps:**
+Search → Backup settings
+**Check:**
+
+* OneDrive / External backup
+
+**Observation:**
+Backup settings were checked and it was observed that backup is not configured. Lack of backup may lead to data loss in case of system failure or cyber attacks such as ransomware.
+==============================================================================================
+Experiment No. 3:Testing IoT Device Security (Default Passwords & Open Ports)
+
+open docker->docker run -d -p 8090:3000 --name juiceshop bkimminich/juice-shop
+next>open browser and keep http://localhost:8090
+in windows cmd ->ipv4 address
+Open terminal in Kali Linux
+Run:nmap -sV 192.168.0.148//our ipv4
+open kali browser ->http://192.168.0.148:8090//our ip
+login with  admin@jucie-sh.op pass: admin123
+ in that interscept
+ network lo check chey
+
+ Observations:
+ The Juice Shop application running inside Docker was scanned using Nmap, which revealed open ports and service information. 
+The application allowed login using default credentials (admin@juice-sh.op / admin123), demonstrating weak authentication practices 
+commonly found in IoT devices and vulnerable applications. This experiment highlighted the security risks 
+ associated with default passwords and exposed network services.
+=======================================================================
+5..Network Forensics with Wireshark (Analyzing captured attack traffic)
+before this in kai browser lo konni http://example.com,http://ouripv4
+Step1:Open kali linux terminal
+Type wireshark &
+ Select eth0->now in apply fileters check with tcp udp http packets
+Step 4: Applying Filters
+Filters are used to narrow down specific packets. For example:
+ ip.addr == 192.168.0.161 → filters packets of a specific IP
+Step 5 :for particular Source address use
+Ip.src==<IP_Address>
+Right click on any TCP packet->Follow->TCP Stream
+ Red text → Data sent from one device 
+ Blue text → Data sent from the other device
+Open kali linux terminal 
+Type nmap –sS <target_IP>
+Use this filter:
+tcp.flags.syn == 1 && tcp.flags.ack == 0
+In wireshark
+Go to Statistics->Capture File Properties
+It provides a quick overview of network traffic and helps detect suspicious activities without 
+analyzing each packet individually.
+Step 9:
+In wireshark Go To
+Statistics->Resolved Address
+Resolve Address in Wireshark converts numerical network addresses (like IP or MAC) into human readable names such as domain names or device names.
+Step 10: Go to 
+Statistics-> Protocol Hierarchy Statistics 
+Protocol Hierarchy Statistics shows the breakdown of all network protocols in the captured 
+traffic in a hierarchical (layer-wise) format along with their percentage and packet count.
+Step 11: Go to
+Statistics->Conversations
+Conversations in Wireshark shows communication between two endpoints (devices), including 
+source and destination addresses, number of packets, and data transferred.
+Step 12:
+Statistics-> Packet Length
+Packet Length refers to the size of a network packet measured in bytes, as captured by Wireshark.
+Step 13:
+Statistics-> End Points
+Endpoints in Wireshark represent individual network devices (hosts) involved in communication. It 
+shows each device separately along with the number of packets sent/received and data usage.
+Step 14: 
+Statistics-> I/O Graphs
+I/O Graphs (Input/Output Graphs) in Wireshark are used to display network traffic over time in the 
+form of a graph, showing the number of packets or bytes captured per second
+
+Observations:
+Network packets were successfully captured and analyzed using Wireshark.
+Different protocols such as TCP, UDP, and HTTP were observed using filters. 
+SYN packets generated by the Nmap scan were identified, demonstrating how reconnaissance 
+traffic appears in packet captures. Features like TCP Stream, Protocol Hierarchy, Conversations, Endpoints, and 
+I/O Graphs helped in understanding communication patterns and detecting suspicious network behavior.
+
+=================================================================================================================================
+//androisd studio steps
+Step 2: Create Android Virtual Device (AVD)
+Open AVD Manager
+Open Android Studio.
+
+Click:
+
+Tools → Device Manager
+
+Click:
+
+Create Device
+Select Device
+
+Choose any device:
+
+Pixel 2
+Pixel 9
+
+Click:
+
+Next
+Select Android Version
+Download any Android API version.
+
+Recommended:
+
+API 36
+
+Click:
+
+Finish
+
+Now AVD is created.
+
+Step 3: Start AVD from Command Prompt
+Open Command Prompt
+
+Type:
+
+cd C:\Users\Admin\AppData\Local\Android\Sdk\emulator
+
+Then check available AVDs:
+
+emulator -list-avds
+
+Example Output:
+
+Medium_Phone_API_36.1
+Pixel_2
+Pixel_9
+Start Emulator with Proxy
+
+Run:
+
+emulator -avd Pixel_9 -http-proxy http://10.0.2.2:8080
+
+Now Android Emulator starts.
+
+Step 4: Setup Proxy Inside Emulator
+Method 1 – Manual Proxy Setup
+
+Inside Emulator:
+
+Settings
+→ Network & Internet
+→ Internet
+→ Select Connected Network
+→ Edit Icon (Top Right)
+→ Advanced Options
+→ Proxy
+→ Manual
+
+Enter:
+
+Hostname : 10.0.2.2
+Port     : 8080
+
+Click:
+
+Save
+Step 5: If Save Option Does Not Work (ADB Method)
+Open Another Command Prompt
+
+Type:
+
+cd C:\Users\Admin\AppData\Local\Android\Sdk\platform-tools
+
+Check emulator connection:
+
+adb devices
+
+Example Output:
+
+List of devices attached
+emulator-5554   device
+Set Proxy Using ADB
+
+Run:
+
+adb shell settings put global http_proxy 10.0.2.2:8080
+
+Verify proxy:
+
+adb shell settings get global http_proxy
+
+Expected Output:
+
+10.0.2.2:8080
+Step 6: Configure Burp Suite
+
+Open Burp Suite.
+
+Go to:
+
+Proxy → Options
+
+Under:
+
+Proxy Listeners
+
+Click:
+
+Edit
+
+Select:
+
+All Interfaces
+
+Click:
+
+OK
+
+Now turn interception ON:
+
+Proxy → Intercept → Intercept ON
+
+Burp Suite is now listening on port:
+
+8080
+Step 7: Capture HTTP Traffic
+
+Inside Emulator:
+
+Open Google Chrome.
+
+Visit:
+
+http://example.com
+
+Now in Burp Suite:
+
+Proxy → HTTP History
+
+You can see captured HTTP requests and responses.
+
+Step 8: Export Burp Suite CA Certificate
+
+To intercept HTTPS traffic:
+
+In Burp Suite:
+
+Proxy → Options
+→ Import / Export CA Certificate
+
+Choose:
+
+Certificate in DER format
+
+Save file as:
+
+burpcer.der
+
+Save it in:
+
+Downloads Folder
+Step 9: Send Certificate to Emulator
+
+Open Command Prompt:
+
+cd C:\Users\Admin\AppData\Local\Android\Sdk\platform-tools
+
+Run:
+
+adb push C:\Users\Admin\Downloads\burpcer.der /sdcard/Download/
+
+Expected Output:
+
+1 file pushed
+Step 10: Install Certificate in Emulator
+
+Inside Emulator:
+
+Settings
+→ Security & Privacy
+→ More Security & Privacy
+→ Encryption & Credentials
+→ Install a Certificate
+→ CA Certificate
+
+Select:
+
+burpcer.der
+
+Confirm installation.
+
+Now HTTPS traffic can be intercepted.
+
+Step 11: Verify HTTPS Interception
+
+Inside Emulator Browser:
+
+Visit:
+
+https://example.com
+
+Now open Burp Suite:
+
+Proxy → HTTP History
+
+You can now see:
+
+HTTPS requests
+HTTPS responses
+Headers
+Cookies
+Parameters
+5. Result
+
+Android application network traffic was successfully intercepted and 
+analysed using Burp Suite by configuring proxy settings in the Android emulator and installing the Burp Suite CA certificate.
