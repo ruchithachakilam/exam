@@ -23,7 +23,7 @@ pom.xml
   <version>0.0.1-SNAPSHOT</version>
 </project>
 =====================================================================
-exp2:
+exp2://2.GUI Checkpoint for Single Property (Title/Text/Attribute)
 package com.test.selenium;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -48,7 +48,7 @@ public class exp1{
 	}
 }
 ==================
-exp 3
+exp 3//3.GUI Checkpoint for Single Object/Window (Displayed/Enabled)
 package com.test.selenium;
 
 import org.openqa.selenium.By;
@@ -81,7 +81,7 @@ public class exp2{
     }
 }
 ====================================================================================
-exp 4a
+exp 4a//4Experiment 4(a): Bitmap Checkpoint for Object/Window (Screenshot Comparison)
 
 package com.test.selenium;
 
@@ -166,7 +166,7 @@ public class exp4a{
 }
 
 ==============================================================================
-exp 4b
+exp 4b//Experiment 4(b): Bitmap Checkpoint for Screen Area (Crop + Compare)
 
 package com.test.selenium;
 
@@ -264,7 +264,7 @@ public class exp4b{
     }
 }
 ===============================================================================
-exp 5
+exp 5//5.Experiment 5: Database Checkpoint – Default Check (Record Exists)
 
 package com.test.selenium;
 
