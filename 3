@@ -1,0 +1,326 @@
+Once you're in the Desktop folder, run:
+
+npx create-react-app jsx-demo
+
+It may take 2–5 minutes.
+Enter the project folder
+After it finishes:
+
+cd jsx-demo
+Step 4: Start the React app
+
+Run:
+
+npm start
+
+Open another Command Prompt inside the project folder and run:
+
+code .
+
+If everything is correct, your browser will automatically open:
+
+http://localhost:3000
+======================================================================================
+EXP 1:
+import React, { useState } from "react";
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h1>JSX and Virtual DOM Demo</h1>
+      <p>Count: {count}</p>
+
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}
+
+export default App;
+
+=====================================================================================
+
+EXP 2:
+app.js
+import React from "react";
+import ProductCard from "./ProductCard";
+
+function App() {
+  const products = [
+    {
+      id: 1,
+      name: "Laptop",
+      price: 50000,
+      category: "Electronics",
+    },
+    {
+      id: 2,
+      name: "Mobile",
+      price: 20000,
+      category: "Electronics",
+    },
+    {
+      id: 3,
+      name: "Shoes",
+      price: 1500,
+      category: "Fashion",
+    },
+  ];
+
+  return (
+    <div>
+      <h1>Product Listing</h1>
+
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}
+          name={product.name}
+          price={product.price}
+          category={product.category}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default App;
+---
+
+ProductCard.js
+import React from "react";
+
+function ProductCard({ name, price, category }) {
+  return (
+    <div
+      style={{
+        border: "1px solid black",
+        margin: "10px",
+        padding: "10px",
+        width: "200px",
+      }}
+    >
+      <h3>{name}</h3>
+
+      <p>Price: ₹{price}</p>
+
+      <p>Category: {category}</p>
+
+      <button onClick={() => alert(`${name} Purchased`)}>
+        Buy Now
+      </button>
+    </div>
+  );
+}
+
+export default ProductCard;==================================================================================
+3rd
+
+import React, { useState } from "react";
+
+function App() {
+  const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [theme, setTheme] = useState("light");
+
+  const addProduct = () => {
+    if (name && price) {
+      setProducts([...products, { name, price }]);
+      setName("");
+      setPrice("");
+    }
+  };
+
+  const filteredProducts = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const total = filteredProducts.reduce(
+    (sum, p) => sum + Number(p.price),
+    0
+  );
+
+  return (
+    <div
+      style={{
+        textAlign: "center",
+        backgroundColor: theme === "light" ? "white" : "#333",
+        color: theme === "light" ? "black" : "white",
+        minHeight: "100vh",
+        padding: "20px",
+      }}
+    >
+      <h1>📦 Inventory Management</h1>
+
+      <input
+        type="text"
+        placeholder="Search Product"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <br /><br />
+
+      <input
+        type="text"
+        placeholder="Product Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <input
+        type="number"
+        placeholder="Price"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+
+      <button onClick={addProduct}>Add Product</button>
+
+      <br /><br />
+
+      <button
+        onClick={() =>
+          setTheme(theme === "light" ? "dark" : "light")
+        }
+      >
+        Toggle Theme
+      </button>
+
+      <h3>Total Inventory Value: ₹{total}</h3>
+
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        {filteredProducts.map((p, i) => (
+          <li key={i}>
+            {p.name} - ₹{p.price}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+----
+or
+
+import React, { useState, useMemo } from "react";
+
+export default function App() {
+  const [products] = useState([
+    { name: "Pen", qty: 10, price: 20 },
+    { name: "Book", qty: 5, price: 100 }
+  ]);
+
+  const [search, setSearch] = useState("");
+  const [dark, setDark] = useState(false);
+
+  const totalValue = useMemo(() => {
+    return products.reduce(
+      (sum, item) => sum + item.qty * item.price,
+      0
+    );
+  }, [products]);
+
+  const filtered = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div
+      style={{
+        backgroundColor: dark ? "#222" : "#fff",
+        color: dark ? "#fff" : "#000",
+        minHeight: "100vh",
+        padding: "20px"
+      }}
+    >
+      <h2>Inventory Management</h2>
+
+      <button onClick={() => setDark(!dark)}>
+        Toggle Theme
+      </button>
+
+      <br />
+      <br />
+
+      <input
+        type="text"
+        placeholder="Search Product"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <ul>
+        {filtered.map((p, index) => (
+          <li key={index}>
+            {p.name} - Qty: {p.qty} - ₹{p.price}
+          </li>
+        ))}
+      </ul>
+
+      <h3>Total Value: ₹{totalValue}</h3>
+    </div>
+  );
+}
+============
+import React, { useState } from "react";
+
+export default function App() {
+  const [products] = useState([
+    { name: "Pen", qty: 10, price: 20 },
+    { name: "Book", qty: 5, price: 100 }
+  ]);
+
+  const [search, setSearch] = useState("");
+  const [dark, setDark] = useState(false);
+
+  const totalValue = products.reduce(
+    (sum, item) => sum + item.qty * item.price,
+    0
+  );
+
+  const filtered = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div
+      style={{
+        backgroundColor: dark ? "#222" : "#fff",
+        color: dark ? "#fff" : "#000",
+        minHeight: "100vh",
+        padding: "20px"
+      }}
+    >
+      <h2>Inventory Management</h2>
+
+      <button onClick={() => setDark(!dark)}>
+        Toggle Theme
+      </button>
+
+      <br /><br />
+
+      <input
+        type="text"
+        placeholder="Search Product"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <ul>
+        {filtered.map((p, index) => (
+          <li key={index}>
+            {p.name} - Qty: {p.qty} - ₹{p.price}
+          </li>
+        ))}
+      </ul>
+
+      <h3>Total Value: ₹{totalValue}</h3>
+    </div>
+  );
+}
